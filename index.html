@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>#ADO by teethehuman</title>
     <style>
-        /* Base Styles */
         body {
             margin: 0;
             padding: 0;
@@ -13,11 +12,9 @@
             color: #ffffff;
             font-family: 'Fira Mono', monospace;
             overflow: hidden;
-            user-select: none; /* Prevent text selection */
-            cursor: none; /* Hide default cursor */
+            user-select: none; 
+            cursor: none; 
         }
-
-        /* Custom Cursor */
         .custom-cursor {
             position: fixed;
             width: 0;
@@ -26,12 +23,10 @@
             border-right: 5px solid transparent;
             border-bottom: 10px solid white;
             pointer-events: none;
-            transform: rotate(-45deg); /* Rotate the cursor */
+            transform: rotate(-45deg); 
             z-index: 9999;
             transition: transform 0.1s ease-in-out;
         }
-
-        /* Ripple Effect */
         .ripple {
             position: absolute;
             border-radius: 50%;
@@ -39,18 +34,17 @@
             transform: scale(0);
             animation: ripple-animation 0.6s ease-out;
             pointer-events: none;
-            width: 20px; /* Smaller size */
-            height: 20px; /* Smaller size */
+            width: 20px; 
+            height: 20px; 
         }
 
         @keyframes ripple-animation {
             to {
-                transform: scale(3); /* Adjust size of the ripple */
+                transform: scale(3);
                 opacity: 0;
             }
         }
 
-        /* Hall of Clowns Section */
         .hall-of-clowns {
             text-align: center;
             margin: 50px 0;
@@ -58,7 +52,6 @@
             color: #fff;
         }
 
-        /* Grid container for the squares */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -66,8 +59,8 @@
             padding: 40px;
             max-width: 1200px;
             margin: 0 auto;
-            overflow-y: auto; /* Scrollable if needed */
-            max-height: 60vh; /* Limit height of the grid */
+            overflow-y: auto;
+            max-height: 60vh; 
         }
 
         .grid-item {
@@ -136,47 +129,39 @@
     <div class="hall-of-clowns">HALL OF CLOWNS</div>
 
     <div class="grid-container" id="pasteGrid">
-        <!-- Dynamic content will be loaded here -->
     </div>
 
     <div class="custom-cursor" id="cursor"></div>
 
     <script>
-        // Follow the mouse cursor
         document.addEventListener('mousemove', function (e) {
             const cursor = document.getElementById('cursor');
             cursor.style.left = e.pageX + 'px';
             cursor.style.top = e.pageY + 'px';
         });
 
-        // Disable right-click
         document.addEventListener('contextmenu', function (e) {
-            e.preventDefault(); // Prevent the context menu
+            e.preventDefault(); 
         });
 
-        // Ripple effect on click (around cursor)
         document.body.addEventListener('click', function (e) {
             const ripple = document.createElement('div');
             ripple.classList.add('ripple');
             document.body.appendChild(ripple);
-
-            // Position ripple around the cursor
             const cursor = document.getElementById('cursor');
-            const rippleSize = 20; // Small size
+            const rippleSize = 20; 
             ripple.style.left = `${parseInt(cursor.style.left) - rippleSize / 2}px`;
             ripple.style.top = `${parseInt(cursor.style.top) - rippleSize / 2}px`;
 
-            // Start the ripple animation
             setTimeout(() => {
                 ripple.remove();
-            }, 600); // Remove the ripple after animation
+            }, 600); 
         });
 
-        // Fetch the data from the JSON file
         fetch('data/items.json')
             .then(response => response.json())
             .then(data => {
-                console.log("Loaded Data: ", data);  // Debugging: Check the loaded data
+                console.log("Loaded Data: ", data);
                 const gridContainer = document.getElementById('pasteGrid');
 
                 if (data.length === 0) {
@@ -186,26 +171,19 @@
                 data.forEach(item => {
                     const gridItem = document.createElement('div');
                     gridItem.classList.add('grid-item');
-
-                    // Title and Description
                     const title = document.createElement('h2');
                     title.innerText = `TITLE: ${item.title}`;
                     gridItem.appendChild(title);
-
                     const desc = document.createElement('p');
                     desc.innerText = `DESC: ${item.desc}`;
                     gridItem.appendChild(desc);
-
-                    // Optional link
                     if (item.link) {
                         const link = document.createElement('a');
                         link.href = item.link;
                         link.innerText = `LINK: ${item.link}`;
-                        link.target = '_blank'; // Open link in a new tab
+                        link.target = '_blank'; 
                         gridItem.appendChild(link);
                     }
-
-                    // Append the grid item
                     gridContainer.appendChild(gridItem);
                 });
             })
